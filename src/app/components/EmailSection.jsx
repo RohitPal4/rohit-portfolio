@@ -1,6 +1,8 @@
+// components/EmailSection.jsx
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import emailjs from "@emailjs/browser";
 import GithubIcon from "../../../public/github-icon.svg";
 import LinkedinIcon from "../../../public/linkedin-icon.svg";
 import Link from "next/link";
@@ -17,6 +19,7 @@ const fadeUp = {
 };
 
 const EmailSection = () => {
+  const formRef = useRef();
   const [emailSubmitted, setEmailSubmitted] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -31,30 +34,20 @@ const EmailSection = () => {
     setIsLoading(true);
     setError("");
 
-    const data = {
-      email: e.target.email.value,
-      subject: e.target.subject.value,
-      message: e.target.message.value,
-    };
-
     try {
-      const response = await fetch("/api/send", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+      const result = await emailjs.sendForm(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID,     // e.g., service_123abc
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID,    // e.g., template_xyz456
+        formRef.current,
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY     // e.g., 6uK3ZyPo_xxxxx
+      );
 
-      const result = await response.json();
-
-      if (response.ok) {
-        setEmailSubmitted(true);
-        e.target.reset();
-      } else {
-        setError(result.error || "Failed to send message");
-      }
+      console.log(result.text);
+      setEmailSubmitted(true);
+      e.target.reset();
     } catch (err) {
-      console.error("Failed to send message:", err);
-      setError("Network error. Please try again.");
+      console.error(err);
+      setError("Failed to send message. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -106,6 +99,7 @@ const EmailSection = () => {
           </motion.div>
         ) : (
           <motion.form
+            ref={formRef}
             className="flex flex-col bg-[#161B22] p-6 rounded-xl shadow-inner"
             onSubmit={handleSubmit}
             initial={{ opacity: 0 }}
@@ -118,9 +112,9 @@ const EmailSection = () => {
               </div>
             )}
 
-            <label htmlFor="email" className="text-sm text-white mb-1">Your email</label>
+            <label htmlFor="user_email" className="text-sm text-white mb-1">Your email</label>
             <input
-              name="email"
+              name="user_email"
               type="email"
               required
               disabled={isLoading}
