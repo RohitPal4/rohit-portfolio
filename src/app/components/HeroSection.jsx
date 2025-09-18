@@ -69,7 +69,7 @@ const HeroSection = () => {
             <motion.a
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              href="/Rohit-CV.pdf"
+              href="/Rohit_Pal_Resume.pdf"
               download
               className="px-1 py-1 w-full sm:w-fit rounded-full bg-gradient-to-br from-blue-500 to-green-500 hover:from-green-500 hover:to-blue-500 text-white font-semibold shadow-lg"
             >

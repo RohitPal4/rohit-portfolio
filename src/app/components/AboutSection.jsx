@@ -61,7 +61,7 @@ const TAB_DATA = [
           <h3 className="text-xl font-bold text-white mb-2">B.Tech CSE (AI & ML)</h3>
           <p className="text-blue-400 font-medium">Galgotias University, Greater Noida</p>
           <div className="flex justify-between items-center mt-3">
-            <span className="text-gray-300">CGPA: 8.42</span>
+            <span className="text-gray-300">CGPA: 8.37</span>
             <span className="text-gray-400">June 2026</span>
           </div>
         </motion.div>
